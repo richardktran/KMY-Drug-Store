@@ -2,7 +2,7 @@ package transports
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/richardktran/MyBlogBE/database"
+	"github.com/richardktran/MyBlogBE/pkg/database"
 )
 
 func Login(c *gin.Context) {

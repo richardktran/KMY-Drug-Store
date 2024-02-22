@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/url"
-	"os"
 
+	"github.com/richardktran/MyBlogBE/pkg/env"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -19,11 +19,11 @@ var dbInstance *database
 
 func GetDB() *gorm.DB {
 	if dbInstance == nil {
-		dbHost := os.Getenv("DB_HOST")
-		dbPort := os.Getenv("DB_PORT")
-		dbUser := os.Getenv("DB_USERNAME")
-		dbPass := os.Getenv("DB_PASSWORD")
-		dbName := os.Getenv("DB_DATABASE")
+		dbHost := env.GET("DB_HOST")
+		dbPort := env.GET("DB_PORT")
+		dbUser := env.GET("DB_USERNAME")
+		dbPass := env.GET("DB_PASSWORD")
+		dbName := env.GET("DB_DATABASE")
 		dbOptions := url.Values{
 			"charset":   {"utf8mb4"},
 			"parseTime": {"True"},
