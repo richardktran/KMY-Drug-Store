@@ -9,8 +9,8 @@ import (
 )
 
 type Message struct {
-	MessageCode string `json:"message_code"`
-	Message     string `json:"message"`
+	MessageCode *string `json:"message_code"`
+	Message     *string `json:"message"`
 }
 
 type Meta struct {
@@ -34,8 +34,8 @@ func ResponseSuccess(data any) *ResponseType {
 	return &ResponseType{
 		StatusCode: http.StatusOK,
 		Message: &Message{
-			MessageCode: "",
-			Message:     "",
+			MessageCode: nil,
+			Message:     nil,
 		},
 		Data: data,
 	}
@@ -45,8 +45,8 @@ func ResponsePagination(data any, paging utils.Paging) *ResponseType {
 	return &ResponseType{
 		StatusCode: http.StatusOK,
 		Message: &Message{
-			MessageCode: "",
-			Message:     "",
+			MessageCode: nil,
+			Message:     nil,
 		},
 		Data: data,
 		Meta: &Meta{
@@ -71,7 +71,7 @@ func ResponseError(statusCode int, root error, messageCode string) *ResponseType
 		*log = root.Error()
 		return &ResponseType{
 			StatusCode: statusCode,
-			Message:    &Message{MessageCode: messageCode, Message: message},
+			Message:    &Message{MessageCode: &messageCode, Message: &message},
 			RootErr:    root,
 			Log:        log,
 		}
@@ -79,7 +79,7 @@ func ResponseError(statusCode int, root error, messageCode string) *ResponseType
 
 	return &ResponseType{
 		StatusCode: statusCode,
-		Message:    &Message{MessageCode: messageCode, Message: message},
+		Message:    &Message{MessageCode: &messageCode, Message: &message},
 		RootErr:    errors.New(message),
 		Log:        log,
 	}
