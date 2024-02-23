@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/richardktran/MyBlogBE/pkg/app"
+	"github.com/richardktran/MyBlogBE/pkg/middleware"
 	"github.com/richardktran/MyBlogBE/routes"
 )
 
@@ -16,6 +17,7 @@ func initRouter() *gin.Engine {
 	}
 
 	r := gin.Default()
+	r.Use(middleware.Recovery())
 	registerAPIRoutes(r, "v1")
 	registerWebRoutes(r)
 

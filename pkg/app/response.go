@@ -3,15 +3,9 @@ package app
 import (
 	"errors"
 	"net/http"
-)
 
-type Paging struct {
-	Count       int   `json:"count" form:"count"`
-	CurrentPage int   `json:"current_page" form:"current_page"`
-	PerPage     int   `json:"per_page" form:"per_page"`
-	Total       int64 `json:"total" form:"-"`
-	TotalPage   int   `json:"total_page" form:"total_page"`
-}
+	"github.com/richardktran/MyBlogBE/pkg/utils"
+)
 
 type Message struct {
 	MessageCode string `json:"message_code"`
@@ -19,7 +13,7 @@ type Message struct {
 }
 
 type Meta struct {
-	Paging Paging `json:"paging,omitempty"`
+	Paging utils.Paging `json:"paging,omitempty"`
 }
 
 type ResponseType struct {
@@ -45,7 +39,7 @@ func ResponseSuccess(data any) *ResponseType {
 	}
 }
 
-func ResponsePagination(data any, paging Paging) *ResponseType {
+func ResponsePagination(data any, paging utils.Paging) *ResponseType {
 	return &ResponseType{
 		StatusCode: http.StatusOK,
 		Message: &Message{
@@ -148,6 +142,18 @@ func ThrowNotFoundError(root error, message, messageCode string) *ResponseType {
 		message,
 		messageCode,
 	)
+}
+
+func (e *ResponseType) RootError() error {
+	if err, oke := e.RootErr.(*ResponseType); oke {
+		return err.RootError()
+	}
+
+	return e.RootErr
+}
+
+func (e *ResponseType) Error() string {
+	return e.RootErr.Error()
 }
 
 var (
