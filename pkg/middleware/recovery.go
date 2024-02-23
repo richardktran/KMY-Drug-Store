@@ -12,7 +12,7 @@ func Recovery() func(*gin.Context) {
 		defer func() {
 			if r := recover(); r != nil {
 				if err, oke := r.(error); oke {
-					c.AbortWithStatusJSON(http.StatusInternalServerError, app.ResponseInternalServerError(err))
+					c.AbortWithStatusJSON(http.StatusInternalServerError, app.ResponseInternalServer(err))
 				}
 
 				panic(r)

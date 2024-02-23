@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/richardktran/MyBlogBE/pkg/utils"
 )
 
@@ -22,7 +23,11 @@ type ResponseType struct {
 	Data       any      `json:"data"`
 	Meta       *Meta    `json:"meta"`
 	RootErr    error    `json:"-"`
-	Log        string   `json:"log"`
+	Log        *string  `json:"log,omitempty"`
+}
+
+func (e *ResponseType) Context(c *gin.Context) {
+	c.JSON(e.StatusCode, e)
 }
 
 func ResponseSuccess(data any) *ResponseType {
@@ -32,10 +37,7 @@ func ResponseSuccess(data any) *ResponseType {
 			MessageCode: "",
 			Message:     "",
 		},
-		Data:    data,
-		Meta:    nil,
-		RootErr: nil,
-		Log:     "",
+		Data: data,
 	}
 }
 
@@ -50,21 +52,23 @@ func ResponsePagination(data any, paging utils.Paging) *ResponseType {
 		Meta: &Meta{
 			Paging: paging,
 		},
-		RootErr: nil,
-		Log:     "",
 	}
 }
 
-func ResponseError(statusCode int, root error, message, messageCode string) *ResponseType {
-	log := message
+func ResponseError(statusCode int, root error, messageCode string) *ResponseType {
+	message := utils.GetMessage(messageCode)
+	var log *string
 
 	if !IsDebug() {
 		root = nil
-		log = ""
+		log = nil
+	} else {
+		log = new(string)
+		*log = ""
 	}
 
 	if root != nil {
-		log = root.Error()
+		*log = root.Error()
 		return &ResponseType{
 			StatusCode: statusCode,
 			Message:    &Message{MessageCode: messageCode, Message: message},
@@ -81,65 +85,59 @@ func ResponseError(statusCode int, root error, message, messageCode string) *Res
 	}
 }
 
-func ResponseBadRequestError(rootError error, message, messageCode string) *ResponseType {
+func ResponseBadRequest(rootError error, messageCode string) *ResponseType {
 
 	return ResponseError(
 		http.StatusBadRequest,
 		rootError,
-		message,
 		messageCode,
 	)
 }
 
-func ResponseNotFoundError(rootError error, message, messageCode string) *ResponseType {
+func ResponseNotFound(rootError error, messageCode string) *ResponseType {
 
 	return ResponseError(
 		http.StatusNotFound,
 		rootError,
-		message,
 		messageCode,
 	)
 }
 
-func ResponseInternalServerError(rootError error) *ResponseType {
+func ResponseInternalServer(rootError error) *ResponseType {
 
 	return ResponseError(
 		http.StatusInternalServerError,
 		rootError,
-		"Something went wrong",
 		"internal_server_error",
 	)
 }
 
 // ThrowError is a helper function to throw error in services layer
 
-func ThrowError(root error, message, messageCode string, statusCode int) *ResponseType {
+func ThrowError(root error, messageCode string, statusCode int) *ResponseType {
 	return ResponseError(
 		statusCode,
 		root,
-		message,
 		messageCode,
 	)
 }
 
-func ThrowBadRequestError(root error, message, messageCode string) *ResponseType {
-	return ResponseBadRequestError(
+func ThrowBadRequestError(root error, messageCode string) *ResponseType {
+	return ResponseBadRequest(
 		root,
-		message,
 		messageCode,
 	)
 }
 
 func ThrowInternalServerError(root error) *ResponseType {
-	return ResponseInternalServerError(
+	return ResponseInternalServer(
 		root,
 	)
 }
 
-func ThrowNotFoundError(root error, message, messageCode string) *ResponseType {
-	return ResponseNotFoundError(
+func ThrowNotFoundError(root error, messageCode string) *ResponseType {
+	return ResponseNotFound(
 		root,
-		message,
 		messageCode,
 	)
 }
