@@ -8,11 +8,11 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type database struct {
-	connection *gorm.DB
+type Database struct {
+	*gorm.DB
 }
 
-var dbInstance *database
+var dbInstance *Database
 
 func GetDB() *gorm.DB {
 	if dbInstance == nil {
@@ -24,10 +24,10 @@ func GetDB() *gorm.DB {
 			log.Fatal("failed to connect database", err)
 		}
 
-		dbInstance = &database{connection: db}
+		dbInstance = &Database{DB: db}
 	}
 
-	return dbInstance.connection
+	return dbInstance.DB
 }
 
 func CloseDB() {
