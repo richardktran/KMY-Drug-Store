@@ -1,57 +1,49 @@
 package router
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	"github.com/richardktran/MyBlogBE/pkg/app"
-	"github.com/richardktran/MyBlogBE/pkg/middleware"
 	"github.com/richardktran/MyBlogBE/routes"
+	"go.uber.org/fx"
 )
 
-var routerInstance *gin.Engine
+// Module exports dependency to container
+var Module = fx.Options(
+	fx.Provide(routes.NewApiV1Route),
+	fx.Provide(routes.NewWebRoute),
+)
 
-func initRouter() *gin.Engine {
+type Routes []Route
+
+type Route interface {
+	Setup(*gin.Engine)
+}
+
+// NewRoutes sets up routes
+func NewRoutes(
+	apiRoute routes.ApiV1Route,
+	webRoute routes.WebRoute,
+) Routes {
+	return Routes{
+		apiRoute,
+		webRoute,
+	}
+}
+
+// Setup all the route
+func (r Routes) Setup() *gin.Engine {
 	if app.IsProduction() {
 		gin.SetMode(gin.ReleaseMode)
 	}
+	route := gin.Default()
 
-	r := gin.Default()
-	r.Use(middleware.Recovery())
-	registerAPIRoutes(r, "v1")
-	registerWebRoutes(r)
-
-	return r
+	return route
 }
 
-func GetRouter() *gin.Engine {
-	if routerInstance == nil {
-		routerInstance = initRouter()
+func (r Routes) RegisterRoutes(routeInit *gin.Engine) *gin.Engine {
+	for _, route := range r {
+		route.Setup(routeInit)
 	}
 
-	return routerInstance
-}
-
-func registerWebRoutes(router *gin.Engine) {
-	web := router.Group("/")
-	{
-		routes.Web(web)
-	}
-}
-
-func registerAPIRoutes(router *gin.Engine, version string) {
-	path := fmt.Sprintf("%s/%s", "api", version)
-	api := router.Group(path)
-	{
-		loadVersionRoutes(api, version)
-	}
-}
-
-func loadVersionRoutes(router *gin.RouterGroup, version string) {
-	switch version {
-	case "v1":
-		routes.V1(router)
-	default:
-		panic(fmt.Sprintf("Version %s is not supported", version))
-	}
+	return routeInit
 }

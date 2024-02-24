@@ -1,11 +1,12 @@
 package main
 
 import (
+	"context"
 	"log"
 
-	"github.com/richardktran/MyBlogBE/pkg/database"
+	"github.com/richardktran/MyBlogBE/bootstrap"
 	"github.com/richardktran/MyBlogBE/pkg/env"
-	"github.com/richardktran/MyBlogBE/pkg/router"
+	"go.uber.org/fx"
 )
 
 func init() {
@@ -13,14 +14,14 @@ func init() {
 }
 
 func main() {
-	router := router.GetRouter()
-
-	if router == nil {
-		log.Fatal("Failed to initialize router")
+	app := fx.New(
+		bootstrap.CommonModules,
+		bootstrap.Module,
+	)
+	ctx := context.Background()
+	err := app.Start(ctx)
+	defer app.Stop(ctx)
+	if err != nil {
+		log.Fatal(err)
 	}
-
-	router.SetTrustedProxies([]string{"127.0.0.1"})
-	router.Run("localhost:3000")
-
-	defer database.CloseDB()
 }
