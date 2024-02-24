@@ -25,3 +25,4 @@ bin/
 .env
 .zed
 .idea/
+.DS_Store

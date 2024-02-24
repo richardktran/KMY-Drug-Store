@@ -2,9 +2,12 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	authTransport "github.com/richardktran/MyBlogBE/modules/auth/transports"
+	handler "github.com/richardktran/MyBlogBE/app/handlers"
 )
 
 func V1(router *gin.RouterGroup) {
-	router.POST("/login", authTransport.Login)
+	todo := router.Group("/todo")
+	{
+		todo.GET("/:id", handler.NewTodoHandler().GetItemHandler())
+	}
 }
