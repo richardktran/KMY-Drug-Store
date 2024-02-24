@@ -1,11 +1,19 @@
 package routes
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/richardktran/MyBlogBE/pkg/app"
+)
 
-func Web(router *gin.RouterGroup) {
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Hello World!",
-		})
+type WebRoute struct {
+}
+
+func NewWebRoute() WebRoute {
+	return WebRoute{}
+}
+
+func (r WebRoute) Setup(router *gin.Engine) {
+	router.GET("/", func(ctx *gin.Context) {
+		app.ResponseSuccess("Welcome to MyBlogBE").Context(ctx)
 	})
 }

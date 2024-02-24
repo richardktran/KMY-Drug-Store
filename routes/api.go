@@ -2,12 +2,25 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	handler "github.com/richardktran/MyBlogBE/app/handlers"
+	"github.com/richardktran/MyBlogBE/app/handlers"
 )
 
-func V1(router *gin.RouterGroup) {
-	todo := router.Group("/todo")
+type ApiV1Route struct {
+	todoHandler handlers.TodoHandler
+}
+
+func NewApiV1Route(todoHandler handlers.TodoHandler) ApiV1Route {
+	return ApiV1Route{
+		todoHandler: todoHandler,
+	}
+}
+
+func (r ApiV1Route) Setup(router *gin.Engine) {
+	api := router.Group("/api/v1/")
 	{
-		todo.GET("/:id", handler.NewTodoHandler().GetItemHandler())
+		todo := api.Group("/todo")
+		{
+			todo.GET("/:id", r.todoHandler.GetItemHandler())
+		}
 	}
 }
