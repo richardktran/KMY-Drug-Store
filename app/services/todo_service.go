@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/richardktran/MyBlogBE/app/contracts"
 	repositories "github.com/richardktran/MyBlogBE/app/respositories"
 	"github.com/richardktran/MyBlogBE/pkg/app"
 )
@@ -9,7 +10,7 @@ type TodoService struct {
 	repository repositories.TodoRepository
 }
 
-func NewTodoService(repository repositories.TodoRepository) TodoService {
+func NewTodoService(repository repositories.TodoRepository) contracts.TodoService {
 	return TodoService{
 		repository: repository,
 	}

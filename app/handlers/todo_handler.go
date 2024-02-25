@@ -5,18 +5,18 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/richardktran/MyBlogBE/app/services"
+	"github.com/richardktran/MyBlogBE/app/contracts"
 	"github.com/richardktran/MyBlogBE/pkg/app"
 )
 
 type TodoHandler struct {
-	todoService services.TodoService
-	userService services.UserService
+	todoService contracts.TodoService
+	userService contracts.UserService
 }
 
 func NewTodoHandler(
-	todoService services.TodoService,
-	userService services.UserService,
+	todoService contracts.TodoService,
+	userService contracts.UserService,
 ) TodoHandler {
 	return TodoHandler{
 		todoService: todoService,
