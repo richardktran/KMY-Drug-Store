@@ -15,7 +15,6 @@ func init() {
 
 func main() {
 	app := fx.New(
-		bootstrap.CommonModules,
 		bootstrap.Module,
 	)
 	ctx := context.Background()

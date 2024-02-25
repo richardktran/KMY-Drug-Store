@@ -3,6 +3,9 @@ package bootstrap
 import (
 	"log"
 
+	"github.com/richardktran/MyBlogBE/app/handlers"
+	repositories "github.com/richardktran/MyBlogBE/app/respositories"
+	"github.com/richardktran/MyBlogBE/app/services"
 	"github.com/richardktran/MyBlogBE/pkg/database"
 	"github.com/richardktran/MyBlogBE/pkg/middleware"
 	"github.com/richardktran/MyBlogBE/pkg/router"
@@ -10,6 +13,10 @@ import (
 )
 
 var Module = fx.Options(
+	handlers.Module,
+	router.Module,
+	services.Module,
+	repositories.Module,
 	fx.Provide(router.NewRoutes),
 	fx.Invoke(RunApp),
 )
