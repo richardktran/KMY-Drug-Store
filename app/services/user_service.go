@@ -1,11 +1,15 @@
 package services
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/richardktran/MyBlogBE/app/services/contracts"
+)
 
 type UserService struct {
 }
 
-func NewUserService() UserService {
+func NewUserService() contracts.UserService {
 	return UserService{}
 }
 
