@@ -1,4 +1,4 @@
-package handlers
+package controllers
 
 import (
 	"log"
@@ -9,22 +9,22 @@ import (
 	"github.com/richardktran/MyBlogBE/pkg/app"
 )
 
-type TodoHandler struct {
+type TodoController struct {
 	todoService contracts.ITodoService
 	userService contracts.IUserService
 }
 
-func NewTodoHandler(
+func NewTodoController(
 	todoService contracts.ITodoService,
 	userService contracts.IUserService,
-) TodoHandler {
-	return TodoHandler{
+) TodoController {
+	return TodoController{
 		todoService: todoService,
 		userService: userService,
 	}
 }
 
-func (h *TodoHandler) GetItemHandler() func(*gin.Context) {
+func (h *TodoController) GetItemController() func(*gin.Context) {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 

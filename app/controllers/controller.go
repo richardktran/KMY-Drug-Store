@@ -1,7 +1,7 @@
-package handlers
+package controllers
 
 import "go.uber.org/fx"
 
 var Module = fx.Options(
-	fx.Provide(NewTodoHandler),
+	fx.Provide(NewTodoController),
 )
