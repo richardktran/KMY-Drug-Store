@@ -10,7 +10,7 @@ type TodoService struct {
 	repository repositories.TodoRepository
 }
 
-func NewTodoService(repository repositories.TodoRepository) contracts.TodoService {
+func NewTodoService(repository repositories.TodoRepository) contracts.ITodoService {
 	return TodoService{
 		repository: repository,
 	}

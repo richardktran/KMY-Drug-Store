@@ -1,5 +1,5 @@
 package contracts
 
-type UserService interface {
+type IUserService interface {
 	GetUser(id int) (interface{}, error)
 }

@@ -10,13 +10,13 @@ import (
 )
 
 type TodoHandler struct {
-	todoService contracts.TodoService
-	userService contracts.UserService
+	todoService contracts.ITodoService
+	userService contracts.IUserService
 }
 
 func NewTodoHandler(
-	todoService contracts.TodoService,
-	userService contracts.UserService,
+	todoService contracts.ITodoService,
+	userService contracts.IUserService,
 ) TodoHandler {
 	return TodoHandler{
 		todoService: todoService,

@@ -1,5 +1,5 @@
 package contracts
 
-type TodoService interface {
+type ITodoService interface {
 	GetItem(id int) (interface{}, error)
 }

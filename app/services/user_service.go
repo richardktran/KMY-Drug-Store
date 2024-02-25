@@ -9,7 +9,7 @@ import (
 type UserService struct {
 }
 
-func NewUserService() contracts.UserService {
+func NewUserService() contracts.IUserService {
 	return UserService{}
 }
 
