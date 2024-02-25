@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/richardktran/MyBlogBE/app/contracts"
+	"github.com/richardktran/MyBlogBE/app/services/contracts"
 	"github.com/richardktran/MyBlogBE/pkg/app"
 )
 

@@ -3,7 +3,7 @@ package services
 import (
 	"fmt"
 
-	"github.com/richardktran/MyBlogBE/app/contracts"
+	"github.com/richardktran/MyBlogBE/app/services/contracts"
 )
 
 type UserService struct {

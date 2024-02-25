@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/richardktran/MyBlogBE/app/contracts"
 	repositories "github.com/richardktran/MyBlogBE/app/respositories"
+	"github.com/richardktran/MyBlogBE/app/services/contracts"
 	"github.com/richardktran/MyBlogBE/pkg/app"
 )
 
