@@ -22,7 +22,7 @@ func (s TodoService) GetItem(id int) (interface{}, *app.AppError) {
 	})
 
 	if err != nil {
-		return nil, app.ThrowGetEntityError(err, "todo_item")
+		return nil, err
 	}
 
 	return data, nil

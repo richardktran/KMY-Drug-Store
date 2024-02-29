@@ -31,7 +31,7 @@ func (h *TodoController) GetItemController() func(*gin.Context) {
 
 		if err != nil {
 			app.ResponseBadRequest(
-				app.ThrowBadRequestError(err, "invalid_id"),
+				app.ThrowBadRequestError(err, "invalid_request"),
 			).Context(c)
 			return
 		}

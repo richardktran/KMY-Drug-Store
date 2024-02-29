@@ -2,9 +2,7 @@ package app
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/richardktran/MyBlogBE/pkg/utils"
 )
@@ -77,10 +75,19 @@ func ThrowNotFoundError(root error, messageCode string) *AppError {
 	)
 }
 
-func ThrowGetEntityError(err error, entity string) *AppError {
-	return ThrowNotFoundError(
-		err,
-		fmt.Sprintf("can_not_get_%s", strings.ToLower(entity)),
+func ThrowDefaultBadRequestError(root error) *AppError {
+	return ThrowError(
+		root,
+		"invalid_request",
+		http.StatusBadRequest,
+	)
+}
+
+func ThrowDefaultNotFoundError(root error) *AppError {
+	return ThrowError(
+		root,
+		"record_not_found",
+		http.StatusNotFound,
 	)
 }
 
@@ -95,7 +102,3 @@ func (e *AppError) RootError() error {
 func (e *AppError) Error() string {
 	return e.RootErr.Error()
 }
-
-var (
-	ErrorRecordNotFound = errors.New("record not found")
-)

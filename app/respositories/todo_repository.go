@@ -14,13 +14,13 @@ func NewTodoRepository() TodoRepository {
 	return TodoRepository{}
 }
 
-func (r TodoRepository) GetItem(condition map[string]interface{}) (*model.TodoItem, error) {
+func (r TodoRepository) GetItem(condition map[string]interface{}) (*model.TodoItem, *app.AppError) {
 	var data model.TodoItem
 	db := database.GetDB()
 
 	if err := db.Where(condition).First(&data).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, app.ErrorRecordNotFound
+			return nil, app.ThrowDefaultNotFoundError(err)
 		} else {
 			return nil, app.ThrowInternalServerError(err)
 		}
