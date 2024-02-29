@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/richardktran/MyBlogBE/pkg/env"
+	"github.com/richardktran/KMY-Drug-Store/pkg/env"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

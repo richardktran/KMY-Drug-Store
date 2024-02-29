@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/richardktran/MyBlogBE/pkg/utils"
+	"github.com/richardktran/KMY-Drug-Store/pkg/utils"
 )
 
 type Message struct {

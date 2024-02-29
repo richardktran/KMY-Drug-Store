@@ -1,9 +1,9 @@
 package services
 
 import (
-	repositories "github.com/richardktran/MyBlogBE/app/respositories"
-	"github.com/richardktran/MyBlogBE/app/services/contracts"
-	"github.com/richardktran/MyBlogBE/pkg/app"
+	repositories "github.com/richardktran/KMY-Drug-Store/app/respositories"
+	"github.com/richardktran/KMY-Drug-Store/app/services/contracts"
+	"github.com/richardktran/KMY-Drug-Store/pkg/app"
 )
 
 type TodoService struct {

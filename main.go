@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/richardktran/MyBlogBE/bootstrap"
-	"github.com/richardktran/MyBlogBE/pkg/env"
+	"github.com/richardktran/KMY-Drug-Store/bootstrap"
+	"github.com/richardktran/KMY-Drug-Store/pkg/env"
 	"go.uber.org/fx"
 )
 

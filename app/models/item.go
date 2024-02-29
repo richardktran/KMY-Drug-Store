@@ -1,6 +1,6 @@
 package model
 
-import "github.com/richardktran/MyBlogBE/pkg/model"
+import "github.com/richardktran/KMY-Drug-Store/pkg/model"
 
 type TodoItem struct {
 	model.BaseModel

@@ -3,7 +3,7 @@ package database
 import (
 	"log"
 
-	"github.com/richardktran/MyBlogBE/pkg/env"
+	"github.com/richardktran/KMY-Drug-Store/pkg/env"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )

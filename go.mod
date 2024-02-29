@@ -1,4 +1,4 @@
-module github.com/richardktran/MyBlogBE
+module github.com/richardktran/KMY-Drug-Store
 
 go 1.22
 

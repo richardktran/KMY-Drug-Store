@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/richardktran/MyBlogBE/pkg/app"
-	"github.com/richardktran/MyBlogBE/routes"
+	"github.com/richardktran/KMY-Drug-Store/pkg/app"
+	"github.com/richardktran/KMY-Drug-Store/routes"
 	"go.uber.org/fx"
 )
 
