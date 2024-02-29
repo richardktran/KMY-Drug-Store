@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/richardktran/MyBlogBE/app/services/contracts"
-	"github.com/richardktran/MyBlogBE/pkg/app"
+	"github.com/richardktran/KMY-Drug-Store/app/services/contracts"
+	"github.com/richardktran/KMY-Drug-Store/pkg/app"
 )
 
 type TodoController struct {

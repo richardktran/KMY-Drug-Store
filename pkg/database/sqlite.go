@@ -3,8 +3,8 @@ package database
 import (
 	"fmt"
 
-	"github.com/richardktran/MyBlogBE/pkg/app"
-	"github.com/richardktran/MyBlogBE/pkg/env"
+	"github.com/richardktran/KMY-Drug-Store/pkg/app"
+	"github.com/richardktran/KMY-Drug-Store/pkg/env"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )

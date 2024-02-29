@@ -1,9 +1,9 @@
 package repositories
 
 import (
-	model "github.com/richardktran/MyBlogBE/app/models"
-	"github.com/richardktran/MyBlogBE/pkg/app"
-	"github.com/richardktran/MyBlogBE/pkg/database"
+	model "github.com/richardktran/KMY-Drug-Store/app/models"
+	"github.com/richardktran/KMY-Drug-Store/pkg/app"
+	"github.com/richardktran/KMY-Drug-Store/pkg/database"
 	"gorm.io/gorm"
 )
 

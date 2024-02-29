@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/richardktran/MyBlogBE/pkg/app"
+	"github.com/richardktran/KMY-Drug-Store/pkg/app"
 )
 
 func Recovery() func(*gin.Context) {

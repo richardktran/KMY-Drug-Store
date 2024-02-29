@@ -3,12 +3,12 @@ package bootstrap
 import (
 	"log"
 
-	"github.com/richardktran/MyBlogBE/app/controllers"
-	repositories "github.com/richardktran/MyBlogBE/app/respositories"
-	"github.com/richardktran/MyBlogBE/app/services"
-	"github.com/richardktran/MyBlogBE/pkg/database"
-	"github.com/richardktran/MyBlogBE/pkg/middleware"
-	"github.com/richardktran/MyBlogBE/pkg/router"
+	"github.com/richardktran/KMY-Drug-Store/app/controllers"
+	repositories "github.com/richardktran/KMY-Drug-Store/app/respositories"
+	"github.com/richardktran/KMY-Drug-Store/app/services"
+	"github.com/richardktran/KMY-Drug-Store/pkg/database"
+	"github.com/richardktran/KMY-Drug-Store/pkg/middleware"
+	"github.com/richardktran/KMY-Drug-Store/pkg/router"
 	"go.uber.org/fx"
 )
 

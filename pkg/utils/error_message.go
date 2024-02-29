@@ -1,6 +1,6 @@
 package utils
 
-import "github.com/richardktran/MyBlogBE/conf"
+import "github.com/richardktran/KMY-Drug-Store/conf"
 
 func GetMessage(messageCode string) string {
 	if message, ok := conf.MessageMap[messageCode]; ok {

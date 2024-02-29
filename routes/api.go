@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/richardktran/MyBlogBE/app/controllers"
+	"github.com/richardktran/KMY-Drug-Store/app/controllers"
 )
 
 type ApiV1Route struct {
