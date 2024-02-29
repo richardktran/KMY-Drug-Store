@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"log"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -29,16 +30,18 @@ func (h *TodoController) GetItemController() func(*gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			app.ResponseBadRequest(err, "invalid_id").Context(c)
+			app.ResponseBadRequest(
+				app.ThrowBadRequestError(err, "invalid_id"),
+			).Context(c)
 			return
 		}
 
-		data, err := h.todoService.GetItem(id)
+		data, exception := h.todoService.GetItem(id)
 		user, _ := h.userService.GetUser(1)
 		log.Println(user)
 
-		if err != nil {
-			app.ResponseNotFound(err, "item_not_found").Context(c)
+		if exception != nil {
+			c.JSON(http.StatusNotFound, exception)
 			return
 		}
 
