@@ -16,13 +16,13 @@ func NewTodoService(repository repositories.TodoRepository) contracts.ITodoServi
 	}
 }
 
-func (s TodoService) GetItem(id int) (interface{}, error) {
+func (s TodoService) GetItem(id int) (interface{}, *app.AppError) {
 	data, err := s.repository.GetItem(map[string]interface{}{
 		"id": id,
 	})
 
 	if err != nil {
-		return nil, app.ThrowNotFoundError(err, "item_not_found")
+		return nil, err
 	}
 
 	return data, nil

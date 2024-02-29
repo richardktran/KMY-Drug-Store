@@ -2,16 +2,16 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/richardktran/MyBlogBE/app/handlers"
+	"github.com/richardktran/MyBlogBE/app/controllers"
 )
 
 type ApiV1Route struct {
-	todoHandler handlers.TodoHandler
+	todoController controllers.TodoController
 }
 
-func NewApiV1Route(todoHandler handlers.TodoHandler) ApiV1Route {
+func NewApiV1Route(todoController controllers.TodoController) ApiV1Route {
 	return ApiV1Route{
-		todoHandler: todoHandler,
+		todoController: todoController,
 	}
 }
 
@@ -20,7 +20,7 @@ func (r ApiV1Route) Setup(router *gin.Engine) {
 	{
 		todo := api.Group("/todo")
 		{
-			todo.GET("/:id", r.todoHandler.GetItemHandler())
+			todo.GET("/:id", r.todoController.GetItemController())
 		}
 	}
 }

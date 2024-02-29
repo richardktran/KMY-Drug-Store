@@ -1,7 +1,8 @@
-package handlers
+package controllers
 
 import (
 	"log"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -9,36 +10,38 @@ import (
 	"github.com/richardktran/MyBlogBE/pkg/app"
 )
 
-type TodoHandler struct {
+type TodoController struct {
 	todoService contracts.ITodoService
 	userService contracts.IUserService
 }
 
-func NewTodoHandler(
+func NewTodoController(
 	todoService contracts.ITodoService,
 	userService contracts.IUserService,
-) TodoHandler {
-	return TodoHandler{
+) TodoController {
+	return TodoController{
 		todoService: todoService,
 		userService: userService,
 	}
 }
 
-func (h *TodoHandler) GetItemHandler() func(*gin.Context) {
+func (h *TodoController) GetItemController() func(*gin.Context) {
 	return func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 
 		if err != nil {
-			app.ResponseBadRequest(err, "invalid_id").Context(c)
+			app.ResponseBadRequest(
+				app.ThrowBadRequestError(err, "invalid_request"),
+			).Context(c)
 			return
 		}
 
-		data, err := h.todoService.GetItem(id)
+		data, exception := h.todoService.GetItem(id)
 		user, _ := h.userService.GetUser(1)
 		log.Println(user)
 
-		if err != nil {
-			app.ResponseNotFound(err, "item_not_found").Context(c)
+		if exception != nil {
+			c.JSON(http.StatusNotFound, exception)
 			return
 		}
 

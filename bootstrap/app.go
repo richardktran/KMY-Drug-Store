@@ -3,7 +3,7 @@ package bootstrap
 import (
 	"log"
 
-	"github.com/richardktran/MyBlogBE/app/handlers"
+	"github.com/richardktran/MyBlogBE/app/controllers"
 	repositories "github.com/richardktran/MyBlogBE/app/respositories"
 	"github.com/richardktran/MyBlogBE/app/services"
 	"github.com/richardktran/MyBlogBE/pkg/database"
@@ -13,7 +13,7 @@ import (
 )
 
 var Module = fx.Options(
-	handlers.Module,
+	controllers.Module,
 	router.Module,
 	services.Module,
 	repositories.Module,
