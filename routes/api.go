@@ -6,21 +6,21 @@ import (
 )
 
 type ApiV1Route struct {
-	todoController controllers.TodoController
+	orderController controllers.OrderController
 }
 
-func NewApiV1Route(todoController controllers.TodoController) ApiV1Route {
+func NewApiV1Route(orderController controllers.OrderController) ApiV1Route {
 	return ApiV1Route{
-		todoController: todoController,
+		orderController: orderController,
 	}
 }
 
 func (r ApiV1Route) Setup(router *gin.Engine) {
 	api := router.Group("/api/v1/")
 	{
-		todo := api.Group("/todo")
+		todo := api.Group("/orders")
 		{
-			todo.GET("/:id", r.todoController.GetItemController())
+			todo.POST("/", r.orderController.StoreOrder())
 		}
 	}
 }
