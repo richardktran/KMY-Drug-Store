@@ -9,13 +9,16 @@ import (
 
 type OrderController struct {
 	orderService contracts.IOrderService
+	userService  contracts.IUserService
 }
 
 func NewOrderController(
 	orderService contracts.IOrderService,
+	userService contracts.IUserService,
 ) OrderController {
 	return OrderController{
 		orderService: orderService,
+		userService:  userService,
 	}
 }
 
@@ -29,6 +32,34 @@ func (o OrderController) StoreOrder() func(c *gin.Context) {
 			).Context(c)
 
 			return
+		}
+
+		if orderRequest.Amount == 0 {
+			app.ResponseBadRequest(
+				app.ThrowBadRequestError(nil, "amount_is_required"),
+			).Context(c)
+
+			return
+		}
+
+		if orderRequest.PhoneNumber == "" {
+			app.ResponseBadRequest(
+				app.ThrowBadRequestError(nil, "phone_number_is_required"),
+			).Context(c)
+
+			return
+		}
+
+		_, exception := o.userService.GetUserByPhoneNumber(orderRequest.PhoneNumber)
+
+		if exception != nil {
+			if orderRequest.FullName == "" {
+				app.ResponseBadRequest(
+					app.ThrowBadRequestError(nil, "full_name_is_required"),
+				).Context(c)
+
+				return
+			}
 		}
 
 		order, exception := o.orderService.StoreOrder(&orderRequest)

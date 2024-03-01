@@ -30,6 +30,10 @@ func (s ProductService) GetProductById(id uint) (*models.Product, *app.AppError)
 }
 
 func (s ProductService) GetProductByName(name string) (*models.Product, *app.AppError) {
+	if name == "" {
+		name = "<empty>"
+	}
+
 	product, err := s.productRepository.GetProduct(map[string]interface{}{"name": name})
 
 	if err != nil {

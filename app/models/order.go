@@ -15,12 +15,12 @@ type Order struct {
 type OrderCreation struct {
 	model.BaseModel
 	PhoneNumber string `json:"phone_number" gorm:"-"`
-	FullName    string `json:"full_name" gorm:"-"`
+	FullName    string `json:"full_name,omitempty" gorm:"-"`
 	UserId      uint   `json:"-" gorm:"column:user_id;"`
-	ProductName string `json:"product_name" gorm:"-"`
-	Unit        string `json:"unit" gorm:"-"`
+	ProductName string `json:"product_name,omitempty" gorm:"-"`
+	Unit        string `json:"unit,omitempty" gorm:"-"`
 	ProductId   uint   `json:"-" gorm:"column:product_id;"`
-	Quantity    int    `json:"quantity" gorm:"column:quantity;"`
+	Quantity    int    `json:"quantity,omitempty" gorm:"column:quantity;"`
 	Amount      int    `json:"amount" gorm:"column:amount;"`
 }
 
