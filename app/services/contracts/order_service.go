@@ -7,6 +7,6 @@ import (
 
 type IOrderService interface {
 	GetOrderById(id uint) (*models.Order, *app.AppError)
-	GetAllOrders(condition map[string]interface{}, recursive bool) ([]models.Order, *app.AppError)
+	GetAllOrders(condition map[string]interface{}, recursive bool) ([]models.Order, *app.Meta, *app.AppError)
 	StoreOrder(data *models.OrderCreation) (*models.Order, *app.AppError)
 }

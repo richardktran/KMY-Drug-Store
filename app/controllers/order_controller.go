@@ -46,7 +46,7 @@ func (ctl *OrderController) GetOrders() func(*gin.Context) {
 			return
 		}
 
-		orders, err := ctl.orderService.GetAllOrders(
+		orders, meta, err := ctl.orderService.GetAllOrders(
 			map[string]interface{}{"user_id": user.ID},
 			false,
 		)
@@ -59,7 +59,7 @@ func (ctl *OrderController) GetOrders() func(*gin.Context) {
 			return
 		}
 
-		app.ResponseSuccess(orders).Context(c)
+		app.ResponseSuccessWithMetaData(orders, meta).Context(c)
 	}
 }
 

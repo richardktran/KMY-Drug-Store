@@ -13,6 +13,10 @@ type Order struct {
 	Note      string   `json:"note,omitempty" gorm:"column:note;"`
 }
 
+type OrderMetaData struct {
+	Total int64 `json:"total,omitempty"`
+}
+
 type OrderCreation struct {
 	model.BaseModel
 	PhoneNumber string `json:"phone_number" gorm:"-"`
@@ -31,5 +35,9 @@ func (Order) TableName() string {
 }
 
 func (OrderCreation) TableName() string {
+	return Order{}.TableName()
+}
+
+func (OrderMetaData) TableName() string {
 	return Order{}.TableName()
 }

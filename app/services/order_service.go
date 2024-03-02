@@ -35,14 +35,14 @@ func (s OrderService) GetOrderById(id uint) (*models.Order, *app.AppError) {
 	return order, nil
 }
 
-func (s OrderService) GetAllOrders(condition map[string]interface{}, recursive bool) ([]models.Order, *app.AppError) {
-	orders, err := s.repository.GetAllOrders(condition, recursive)
+func (s OrderService) GetAllOrders(condition map[string]interface{}, recursive bool) ([]models.Order, *app.Meta, *app.AppError) {
+	orders, metaData, err := s.repository.GetAllOrders(condition, recursive)
 
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return orders, nil
+	return orders, metaData, nil
 }
 
 func (s OrderService) StoreOrder(data *models.OrderCreation) (*models.Order, *app.AppError) {

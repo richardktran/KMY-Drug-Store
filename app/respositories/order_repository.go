@@ -24,14 +24,14 @@ func (r OrderRepository) GetOrder(condition map[string]interface{}) (*models.Ord
 	return &order, nil
 }
 
-func (r OrderRepository) GetAllOrders(condition map[string]interface{}, recursive bool) ([]models.Order, *app.AppError) {
+func (r OrderRepository) GetAllOrders(condition map[string]interface{}, recursive bool) ([]models.Order, *app.Meta, *app.AppError) {
 	var orders []models.Order
-	db := database.GetDB()
+	var metaData models.OrderMetaData
+	db := database.GetDB().Where(condition)
 
-	if err := db.Where(condition).
-		Order("created_at DESC").
+	if err := db.Order("created_at DESC").
 		Find(&orders).Error; err != nil {
-		return nil, app.ThrowDefaultNotFoundError(err)
+		return nil, nil, app.ThrowDefaultNotFoundError(err)
 	}
 
 	if recursive {
@@ -46,7 +46,12 @@ func (r OrderRepository) GetAllOrders(condition map[string]interface{}, recursiv
 		}
 	}
 
-	return orders, nil
+	// Query total amount
+	if err := db.Select("SUM(amount)").Scan(&metaData.Total).Error; err != nil {
+		return nil, nil, app.ThrowDefaultNotFoundError(err)
+	}
+
+	return orders, &app.Meta{Data: metaData}, nil
 }
 
 func (r OrderRepository) StoreOrder(data *models.OrderCreation) (uint, *app.AppError) {
