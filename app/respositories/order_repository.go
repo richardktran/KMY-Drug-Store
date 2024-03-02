@@ -29,21 +29,19 @@ func (r OrderRepository) GetAllOrders(condition map[string]interface{}, recursiv
 	var metaData models.OrderMetaData
 	db := database.GetDB().Where(condition)
 
-	if err := db.Order("created_at DESC").
-		Find(&orders).Error; err != nil {
-		return nil, nil, app.ThrowDefaultNotFoundError(err)
-	}
-
 	if recursive {
-		for i := range orders {
-			db.Preload("User").Preload("Product").Find(&orders[i])
-		}
+		db.Preload("User").Preload("Product")
 	} else {
 		// set user and product to nil
 		for i := range orders {
 			orders[i].User = nil
 			orders[i].Product = nil
 		}
+	}
+
+	if err := db.Order("created_at DESC").
+		Find(&orders).Error; err != nil {
+		return nil, nil, app.ThrowDefaultNotFoundError(err)
 	}
 
 	// Query total amount

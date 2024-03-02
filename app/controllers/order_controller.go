@@ -26,6 +26,34 @@ func NewOrderController(
 
 func (ctl *OrderController) GetOrders() func(*gin.Context) {
 	return func(c *gin.Context) {
+		// Get all query parameters
+		params := c.Request.URL.Query()
+
+		// Convert url.Values to map[string]interface{}
+		query := make(map[string]interface{})
+		for key, value := range params {
+			query[key] = value[0]
+		}
+
+		orders, meta, err := ctl.orderService.GetAllOrders(
+			query,
+			true,
+		)
+
+		if err != nil {
+			app.ResponseNotFound(
+				app.ThrowNotFoundError(err, "orders_not_found"),
+			).Context(c)
+
+			return
+		}
+
+		app.ResponseSuccessWithMetaData(orders, meta).Context(c)
+	}
+}
+
+func (ctl *OrderController) GetOrdersByPhoneNumber() func(*gin.Context) {
+	return func(c *gin.Context) {
 		phoneNumber := c.DefaultQuery("phone_number", "")
 
 		if phoneNumber == "" {

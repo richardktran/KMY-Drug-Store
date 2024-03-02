@@ -26,9 +26,14 @@ func NewApiV1Route(
 func (r ApiV1Route) Setup(router *gin.Engine) {
 	api := router.Group("/api/v1/")
 	{
+		admin := api.Group("/admin")
+		{
+			admin.GET("/orders", r.orderController.GetOrders())
+		}
+
 		orders := api.Group("/orders")
 		{
-			orders.GET("/", r.orderController.GetOrders())
+			orders.GET("/", r.orderController.GetOrdersByPhoneNumber())
 			orders.POST("/", r.orderController.StoreOrder())
 		}
 
