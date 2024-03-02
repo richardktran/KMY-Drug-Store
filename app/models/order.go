@@ -4,13 +4,13 @@ import "github.com/richardktran/KMY-Drug-Store/pkg/model"
 
 type Order struct {
 	model.BaseModel
-	UserID    uint    `json:"-" gorm:"column:user_id;"`
-	User      User    `json:"user" gorm:"foreignKey:UserID;"` // foreign key
-	ProductID uint    `json:"-" gorm:"column:product_id;"`
-	Product   Product `json:"product" gorm:"foreignKey:ProductID;"` // foreign key
-	Amount    int     `json:"amount" gorm:"column:amount;"`
-	Quantity  int     `json:"quantity" gorm:"column:quantity;"`
-	Note      string  `json:"note,omitempty" gorm:"column:note;"`
+	UserID    uint     `json:"-" gorm:"column:user_id;"`
+	User      *User    `json:"user,omitempty" gorm:"foreignKey:UserID;"` // foreign key
+	ProductID uint     `json:"-" gorm:"column:product_id;"`
+	Product   *Product `json:"product,omitempty" gorm:"foreignKey:ProductID;"` // foreign key
+	Amount    int      `json:"amount" gorm:"column:amount;"`
+	Quantity  int      `json:"quantity" gorm:"column:quantity;"`
+	Note      string   `json:"note,omitempty" gorm:"column:note;"`
 }
 
 type OrderCreation struct {

@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"errors"
+
 	"github.com/gin-gonic/gin"
 	"github.com/richardktran/KMY-Drug-Store/app/models"
 	"github.com/richardktran/KMY-Drug-Store/app/services/contracts"
@@ -19,6 +21,45 @@ func NewOrderController(
 	return OrderController{
 		orderService: orderService,
 		userService:  userService,
+	}
+}
+
+func (ctl *OrderController) GetOrders() func(*gin.Context) {
+	return func(c *gin.Context) {
+		phoneNumber := c.DefaultQuery("phone_number", "")
+
+		if phoneNumber == "" {
+			app.ResponseBadRequest(
+				app.ThrowBadRequestError(errors.New("phone_number_is_required"), "phone_number_is_required"),
+			).Context(c)
+
+			return
+		}
+
+		user, err := ctl.userService.GetUserByPhoneNumber(phoneNumber)
+
+		if err != nil {
+			app.ResponseBadRequest(
+				app.ThrowNotFoundError(errors.New("user_not_found"), "user_not_found"),
+			).Context(c)
+
+			return
+		}
+
+		orders, err := ctl.orderService.GetAllOrders(
+			map[string]interface{}{"user_id": user.ID},
+			false,
+		)
+
+		if err != nil {
+			app.ResponseNotFound(
+				app.ThrowNotFoundError(err, "orders_not_found"),
+			).Context(c)
+
+			return
+		}
+
+		app.ResponseSuccess(orders).Context(c)
 	}
 }
 

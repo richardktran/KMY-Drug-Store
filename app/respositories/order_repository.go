@@ -24,6 +24,31 @@ func (r OrderRepository) GetOrder(condition map[string]interface{}) (*models.Ord
 	return &order, nil
 }
 
+func (r OrderRepository) GetAllOrders(condition map[string]interface{}, recursive bool) ([]models.Order, *app.AppError) {
+	var orders []models.Order
+	db := database.GetDB()
+
+	if err := db.Where(condition).
+		Order("created_at DESC").
+		Find(&orders).Error; err != nil {
+		return nil, app.ThrowDefaultNotFoundError(err)
+	}
+
+	if recursive {
+		for i := range orders {
+			db.Preload("User").Preload("Product").Find(&orders[i])
+		}
+	} else {
+		// set user and product to nil
+		for i := range orders {
+			orders[i].User = nil
+			orders[i].Product = nil
+		}
+	}
+
+	return orders, nil
+}
+
 func (r OrderRepository) StoreOrder(data *models.OrderCreation) (uint, *app.AppError) {
 	db := database.GetDB()
 

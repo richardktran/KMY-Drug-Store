@@ -10,4 +10,5 @@ var MessageMap = map[string]string{
 	"full_name_is_required":    "Họ tên không được để trống",
 	"product_not_found":        "Không tìm thấy sản phẩm",
 	"product_name_is_required": "Tên sản phẩm không được để trống",
+	"orders_not_found":         "Không tìm thấy thông tin đơn hàng",
 }
