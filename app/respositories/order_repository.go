@@ -30,7 +30,7 @@ func (r OrderRepository) GetAllOrders(condition map[string]interface{}, recursiv
 	db := database.GetDB().Where(condition)
 
 	if recursive {
-		db.Preload("User").Preload("Product")
+		db = db.Joins("User").Joins("Product")
 	} else {
 		// set user and product to nil
 		for i := range orders {
@@ -39,13 +39,13 @@ func (r OrderRepository) GetAllOrders(condition map[string]interface{}, recursiv
 		}
 	}
 
-	if err := db.Order("created_at DESC").
+	if err := db.Order("orders.created_at DESC").
 		Find(&orders).Error; err != nil {
 		return nil, nil, app.ThrowDefaultNotFoundError(err)
 	}
 
 	// Query total amount
-	if err := db.Select("SUM(amount)").Scan(&metaData.Total).Error; err != nil {
+	if err := db.Select("SUM(orders.amount)").Scan(&metaData.Total).Error; err != nil {
 		return nil, nil, app.ThrowDefaultNotFoundError(err)
 	}
 
