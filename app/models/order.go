@@ -10,6 +10,7 @@ type Order struct {
 	Product   Product `json:"product" gorm:"foreignKey:ProductID;"` // foreign key
 	Amount    int     `json:"amount" gorm:"column:amount;"`
 	Quantity  int     `json:"quantity" gorm:"column:quantity;"`
+	Note      string  `json:"note,omitempty" gorm:"column:note;"`
 }
 
 type OrderCreation struct {
@@ -22,6 +23,7 @@ type OrderCreation struct {
 	ProductId   uint   `json:"-" gorm:"column:product_id;"`
 	Quantity    int    `json:"quantity,omitempty" gorm:"column:quantity;"`
 	Amount      int    `json:"amount" gorm:"column:amount;"`
+	Note        string `json:"note,omitempty" gorm:"column:note;"`
 }
 
 func (Order) TableName() string {
