@@ -22,11 +22,11 @@ func NewUserController(
 
 func (ctl *UserController) GetUserByPhone() func(*gin.Context) {
 	return func(c *gin.Context) {
-		phoneNumber := c.Param("phone_number")
+		phoneNumber := c.DefaultQuery("phone_number", "")
 
 		if phoneNumber == "" {
 			app.ResponseBadRequest(
-				app.ThrowBadRequestError(errors.New("phone number is required"), "phone_number_is_required"),
+				app.ThrowBadRequestError(errors.New("phone_number_is_required"), "phone_number_is_required"),
 			).Context(c)
 
 			return
