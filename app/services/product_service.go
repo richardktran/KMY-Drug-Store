@@ -44,6 +44,9 @@ func (s ProductService) GetProductByName(name string) (*models.Product, *app.App
 }
 
 func (s ProductService) CreateProduct(data models.ProductCreation) *models.Product {
+	if data.Name == "" {
+		data.Name = "<empty>"
+	}
 	productId, err := s.productRepository.CreateProduct(&data)
 
 	if err != nil {
