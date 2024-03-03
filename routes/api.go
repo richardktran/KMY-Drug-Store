@@ -33,18 +33,18 @@ func (r ApiV1Route) Setup(router *gin.Engine) {
 
 		orders := api.Group("/orders")
 		{
-			orders.GET("/", r.orderController.GetOrdersByPhoneNumber())
-			orders.POST("/", r.orderController.StoreOrder())
+			orders.GET("", r.orderController.GetOrdersByPhoneNumber())
+			orders.POST("", r.orderController.StoreOrder())
 		}
 
 		user := api.Group("/users")
 		{
-			user.GET("/", r.userController.GetUserByPhone())
+			user.GET("", r.userController.GetUserByPhone())
 		}
 
 		product := api.Group("/products")
 		{
-			product.GET("/", r.productController.GetProduct())
+			product.GET("", r.productController.GetProduct())
 		}
 	}
 }
