@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/richardktran/KMY-Drug-Store/pkg/app"
+	"github.com/richardktran/KMY-Drug-Store/pkg/middleware"
 	"github.com/richardktran/KMY-Drug-Store/routes"
 	"go.uber.org/fx"
 )
@@ -36,6 +37,9 @@ func (r Routes) Setup() *gin.Engine {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	route := gin.Default()
+
+	// Setup CORS
+	route.Use(middleware.NewCORSMiddleware())
 
 	return route
 }

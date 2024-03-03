@@ -1,18 +1,56 @@
 package services
 
 import (
-	"fmt"
-
+	"github.com/richardktran/KMY-Drug-Store/app/models"
+	repositories "github.com/richardktran/KMY-Drug-Store/app/respositories"
 	"github.com/richardktran/KMY-Drug-Store/app/services/contracts"
+	"github.com/richardktran/KMY-Drug-Store/pkg/app"
 )
 
 type UserService struct {
+	userRepository repositories.UserRepository
 }
 
-func NewUserService() contracts.IUserService {
-	return UserService{}
+func NewUserService(
+	userRepository repositories.UserRepository,
+) contracts.IUserService {
+	return UserService{
+		userRepository: userRepository,
+	}
 }
 
-func (s UserService) GetUser(id int) (interface{}, error) {
-	return fmt.Sprintf("Khoa id=%d", id), nil
+func (s UserService) GetUserByPhoneNumber(phoneNumber string) (*models.User, *app.AppError) {
+	user, err := s.userRepository.GetUser(map[string]interface{}{"phone_number": phoneNumber})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s UserService) GetUserById(id uint) (*models.User, *app.AppError) {
+	user, err := s.userRepository.GetUser(map[string]interface{}{"id": id})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s UserService) CreateUser(data models.UserCreation) *models.User {
+	userId, err := s.userRepository.CreateUser(&data)
+
+	if err != nil {
+		return nil
+	}
+
+	user, err := s.GetUserById(userId)
+
+	if err != nil {
+		return nil
+	}
+
+	return user
 }

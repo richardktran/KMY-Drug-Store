@@ -6,21 +6,45 @@ import (
 )
 
 type ApiV1Route struct {
-	todoController controllers.TodoController
+	orderController   controllers.OrderController
+	userController    controllers.UserController
+	productController controllers.ProductController
 }
 
-func NewApiV1Route(todoController controllers.TodoController) ApiV1Route {
+func NewApiV1Route(
+	orderController controllers.OrderController,
+	userController controllers.UserController,
+	productController controllers.ProductController,
+) ApiV1Route {
 	return ApiV1Route{
-		todoController: todoController,
+		orderController:   orderController,
+		userController:    userController,
+		productController: productController,
 	}
 }
 
 func (r ApiV1Route) Setup(router *gin.Engine) {
 	api := router.Group("/api/v1/")
 	{
-		todo := api.Group("/todo")
+		admin := api.Group("/admin")
 		{
-			todo.GET("/:id", r.todoController.GetItemController())
+			admin.GET("/orders", r.orderController.GetOrders())
+		}
+
+		orders := api.Group("/orders")
+		{
+			orders.GET("", r.orderController.GetOrdersByPhoneNumber())
+			orders.POST("", r.orderController.StoreOrder())
+		}
+
+		user := api.Group("/users")
+		{
+			user.GET("", r.userController.GetUserByPhone())
+		}
+
+		product := api.Group("/products")
+		{
+			product.GET("", r.productController.GetProduct())
 		}
 	}
 }
