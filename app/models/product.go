@@ -11,7 +11,7 @@ type Product struct {
 type ProductCreation struct {
 	model.BaseModel
 	Name string `json:"name" gorm:"column:name;"`
-	Unit string `json:"unit" gorm:"column:unit;"`
+	Unit string `json:"unit" gorm:"column:unit;default:null"`
 }
 
 func (Product) TableName() string {

@@ -23,11 +23,11 @@ type OrderCreation struct {
 	FullName    string `json:"full_name,omitempty" gorm:"-"`
 	UserId      uint   `json:"-" gorm:"column:user_id;"`
 	ProductName string `json:"product_name" gorm:"-"`
-	Unit        string `json:"unit,omitempty" gorm:"-"`
+	Unit        string `json:"unit,omitempty" gorm:"default:null"`
 	ProductId   uint   `json:"-" gorm:"column:product_id;"`
 	Quantity    int    `json:"quantity,omitempty" gorm:"column:quantity;"`
 	Amount      int    `json:"amount" gorm:"column:amount;"`
-	Note        string `json:"note,omitempty" gorm:"column:note;"`
+	Note        string `json:"note,omitempty" gorm:"column:note;default:null"`
 }
 
 func (Order) TableName() string {
