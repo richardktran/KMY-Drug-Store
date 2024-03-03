@@ -9,6 +9,7 @@ import (
 
 type Meta struct {
 	Paging utils.Paging `json:"paging,omitempty"`
+	Data   any          `json:"data,omitempty"`
 }
 
 type ResponseType struct {
@@ -28,6 +29,14 @@ func ResponseSuccess(data any) *ResponseType {
 	return &ResponseType{
 		StatusCode: http.StatusOK,
 		Data:       data,
+	}
+}
+
+func ResponseSuccessWithMetaData(data any, meta *Meta) *ResponseType {
+	return &ResponseType{
+		StatusCode: http.StatusOK,
+		Data:       data,
+		Meta:       meta,
 	}
 }
 

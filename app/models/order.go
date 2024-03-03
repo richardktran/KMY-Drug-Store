@@ -4,12 +4,17 @@ import "github.com/richardktran/KMY-Drug-Store/pkg/model"
 
 type Order struct {
 	model.BaseModel
-	UserID    uint    `json:"-" gorm:"column:user_id;"`
-	User      User    `json:"user" gorm:"foreignKey:UserID;"` // foreign key
-	ProductID uint    `json:"-" gorm:"column:product_id;"`
-	Product   Product `json:"product" gorm:"foreignKey:ProductID;"` // foreign key
-	Amount    int     `json:"amount" gorm:"column:amount;"`
-	Quantity  int     `json:"quantity" gorm:"column:quantity;"`
+	UserID    uint     `json:"-" gorm:"column:user_id;"`
+	User      *User    `json:"user,omitempty" gorm:"foreignKey:UserID;"` // foreign key
+	ProductID uint     `json:"-" gorm:"column:product_id;"`
+	Product   *Product `json:"product,omitempty" gorm:"foreignKey:ProductID;"` // foreign key
+	Amount    int      `json:"amount" gorm:"column:amount;"`
+	Quantity  int      `json:"quantity" gorm:"column:quantity;"`
+	Note      string   `json:"note,omitempty" gorm:"column:note;"`
+}
+
+type OrderMetaData struct {
+	Total int64 `json:"total,omitempty"`
 }
 
 type OrderCreation struct {
@@ -22,6 +27,7 @@ type OrderCreation struct {
 	ProductId   uint   `json:"-" gorm:"column:product_id;"`
 	Quantity    int    `json:"quantity,omitempty" gorm:"column:quantity;"`
 	Amount      int    `json:"amount" gorm:"column:amount;"`
+	Note        string `json:"note,omitempty" gorm:"column:note;"`
 }
 
 func (Order) TableName() string {
@@ -29,5 +35,9 @@ func (Order) TableName() string {
 }
 
 func (OrderCreation) TableName() string {
+	return Order{}.TableName()
+}
+
+func (OrderMetaData) TableName() string {
 	return Order{}.TableName()
 }

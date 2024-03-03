@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"errors"
+
 	"github.com/gin-gonic/gin"
 	"github.com/richardktran/KMY-Drug-Store/app/models"
 	"github.com/richardktran/KMY-Drug-Store/app/services/contracts"
@@ -19,6 +21,73 @@ func NewOrderController(
 	return OrderController{
 		orderService: orderService,
 		userService:  userService,
+	}
+}
+
+func (ctl *OrderController) GetOrders() func(*gin.Context) {
+	return func(c *gin.Context) {
+		// Get all query parameters
+		params := c.Request.URL.Query()
+
+		// Convert url.Values to map[string]interface{}
+		query := make(map[string]interface{})
+		for key, value := range params {
+			query[key] = value[0]
+		}
+
+		orders, meta, err := ctl.orderService.GetAllOrders(
+			query,
+			true,
+		)
+
+		if err != nil {
+			app.ResponseNotFound(
+				app.ThrowNotFoundError(err, "orders_not_found"),
+			).Context(c)
+
+			return
+		}
+
+		app.ResponseSuccessWithMetaData(orders, meta).Context(c)
+	}
+}
+
+func (ctl *OrderController) GetOrdersByPhoneNumber() func(*gin.Context) {
+	return func(c *gin.Context) {
+		phoneNumber := c.DefaultQuery("phone_number", "")
+
+		if phoneNumber == "" {
+			app.ResponseBadRequest(
+				app.ThrowBadRequestError(errors.New("phone_number_is_required"), "phone_number_is_required"),
+			).Context(c)
+
+			return
+		}
+
+		user, err := ctl.userService.GetUserByPhoneNumber(phoneNumber)
+
+		if err != nil {
+			app.ResponseBadRequest(
+				app.ThrowNotFoundError(errors.New("user_not_found"), "user_not_found"),
+			).Context(c)
+
+			return
+		}
+
+		orders, meta, err := ctl.orderService.GetAllOrders(
+			map[string]interface{}{"user_id": user.ID},
+			false,
+		)
+
+		if err != nil {
+			app.ResponseNotFound(
+				app.ThrowNotFoundError(err, "orders_not_found"),
+			).Context(c)
+
+			return
+		}
+
+		app.ResponseSuccessWithMetaData(orders, meta).Context(c)
 	}
 }
 
