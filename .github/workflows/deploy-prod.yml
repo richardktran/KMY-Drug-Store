@@ -32,9 +32,12 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         key: ${{ secrets.SSHKEY }}
         script: |
-              cd ${{secrets.TARGET}} && make build
+              cd ${{secrets.TARGET}}
+              make build
+              touch "${{secrets.TARGET}}/bin/.env"
               printf "%s" "${{secrets.PRODUCTION_ENV}}" > "${{secrets.TARGET}}/bin/.env"
               cp ${{secrets.TARGET}}/api.quaythuockhanhmy.service /etc/systemd/system/api.quaythuockhanhmy.service
+              cat /etc/systemd/system/api.quaythuockhanhmy.service
               cd /etc/systemd/system
               systemctl daemon-reload
               systemctl start api.quaythuockhanhmy.service
