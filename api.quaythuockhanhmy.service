@@ -1,14 +1,14 @@
 [Unit]
-Description=API QuayThuocDoanThao
+Description=API Quay Thuoc Khanh My
 After=network.target
 
 [Service]
-ExecStart=/var/www/api.quaythuocdoanthao/bin/richardktranBlog
+ExecStart=/var/www/api.quaythuockhanhmy/bin/kmy
 Restart=always
 User=root
 Group=root
 EnvironmentFile=/etc/environment
-WorkingDirectory=/var/www/api.quaythuocdoanthao/bin
+WorkingDirectory=/var/www/api.quaythuockhanhmy/bin
 
 [Install]
 WantedBy=multi-user.target
