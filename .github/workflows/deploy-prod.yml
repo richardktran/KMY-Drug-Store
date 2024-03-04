@@ -32,8 +32,7 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         key: ${{ secrets.SSHKEY }}
         script: |
-              cd ${{secrets.TARGET}} && make build
-              mkdir -p ${{secrets.TARGET}}/bin
+              go build -o ${{secrets.TARGET}}/bin/kmy ${{secrets.TARGET}}/
 
     - name: Deploy
       uses: appleboy/ssh-action@master
