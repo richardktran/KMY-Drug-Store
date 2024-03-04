@@ -33,8 +33,7 @@ jobs:
         key: ${{ secrets.SSHKEY }}
         script: |
               cd ${{secrets.TARGET}} && make build
-              touch "${{secrets.TARGET}}/bin/.env"
-              printf "%s" "${{secrets.PRODUCTION_ENV}}" > "${{secrets.TARGET}}/bin/.env"
+              mkdir -p ${{secrets.TARGET}}/bin
 
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -45,6 +44,8 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         key: ${{ secrets.SSHKEY }}
         script: |
+              touch "${{secrets.TARGET}}/bin/.env"
+              printf "%s" "${{secrets.PRODUCTION_ENV}}" > "${{secrets.TARGET}}/bin/.env"
               systemctl stop api.quaythuockhanhmy.service
               systemctl disable api.quaythuockhanhmy.service
               rm /etc/systemd/system/api.quaythuockhanhmy.service
