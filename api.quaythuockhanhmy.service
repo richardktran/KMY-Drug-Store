@@ -4,7 +4,9 @@ After=network.target
 
 [Service]
 ExecStart=/var/www/api.quaythuockhanhmy/bin/kmy
-Restart=always
+Restart=on-failure
+RestartSec=10
+startLimitIntervalSec=60
 User=root
 Group=root
 EnvironmentFile=/etc/environment
