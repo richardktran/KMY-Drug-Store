@@ -35,6 +35,7 @@ jobs:
               cd ${{secrets.TARGET}} && make build
               printf "%s" "${{secrets.PRODUCTION_ENV}}" > "${{secrets.TARGET}}/bin/.env"
               cp ${{secrets.TARGET}}/api.quaythuockhanhmy.service /etc/systemd/system/api.quaythuockhanhmy.service
+              cd /etc/systemd/system
               systemctl daemon-reload
               systemctl start api.quaythuockhanhmy.service
               
