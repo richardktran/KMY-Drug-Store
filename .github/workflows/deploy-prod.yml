@@ -38,6 +38,8 @@ jobs:
               printf "%s" "${{secrets.PRODUCTION_ENV}}" > "${{secrets.TARGET}}/bin/.env"
               systemctl stop api.quaythuockhanhmy.service
               systemctl disable api.quaythuockhanhmy.service
+              rm /etc/systemd/system/api.quaythuockhanhmy.service
+              systemctl daemon-reload
               cp ${{secrets.TARGET}}/api.quaythuockhanhmy.service /etc/systemd/system/api.quaythuockhanhmy.service
               cat /etc/systemd/system/api.quaythuockhanhmy.service
               cd /etc/systemd/system
