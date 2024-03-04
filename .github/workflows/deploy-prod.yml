@@ -32,15 +32,8 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         key: ${{ secrets.SSHKEY }}
         script: |
-              cd /tmp
-              apt install wget -y
-              wget https://go.dev/dl/go1.22.0.src.tar.gz
-              tar -xvf go1.22.0.src.tar.gz
-              mv go /usr/local
-              echo "export PATH=$PATH:/usr/local/go/bin" >> ~/.bashrc
-              source ~/.bashrc
               go version
-              go build -o ${{secrets.TARGET}}/bin/kmy ${{secrets.TARGET}}/
+              cd ${{secrets.TARGET}} && make build
 
     - name: Deploy
       uses: appleboy/ssh-action@master
