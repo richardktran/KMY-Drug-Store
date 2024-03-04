@@ -7,6 +7,7 @@ import (
 	repositories "github.com/richardktran/KMY-Drug-Store/app/respositories"
 	"github.com/richardktran/KMY-Drug-Store/app/services"
 	"github.com/richardktran/KMY-Drug-Store/pkg/database"
+	"github.com/richardktran/KMY-Drug-Store/pkg/env"
 	"github.com/richardktran/KMY-Drug-Store/pkg/middleware"
 	"github.com/richardktran/KMY-Drug-Store/pkg/router"
 	"go.uber.org/fx"
@@ -33,7 +34,7 @@ func RunApp(router router.Routes) {
 	}
 
 	r.SetTrustedProxies([]string{"127.0.0.1"})
-	r.Run("localhost:3000")
+	r.Run(env.GET("APP_URL"))
 
 	defer database.CloseDB()
 }
