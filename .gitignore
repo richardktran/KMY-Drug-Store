@@ -23,6 +23,7 @@ go.work
 tmp/
 bin/
 .env
+.env.production
 .zed
 .idea/
 .DS_Store
