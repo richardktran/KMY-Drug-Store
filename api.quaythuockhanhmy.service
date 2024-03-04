@@ -1,0 +1,14 @@
+[Unit]
+Description=API QuayThuocDoanThao
+After=network.target
+
+[Service]
+ExecStart=/var/www/api.quaythuocdoanthao/bin/richardktranBlog
+Restart=always
+User=root
+Group=root
+EnvironmentFile=/etc/environment
+WorkingDirectory=/var/www/api.quaythuocdoanthao/bin
+
+[Install]
+WantedBy=multi-user.target
