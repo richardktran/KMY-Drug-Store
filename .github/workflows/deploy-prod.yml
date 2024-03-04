@@ -22,6 +22,18 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         source: "."
         target: ${{ secrets.TARGET }}
+    
+    - name: Build
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        port: ${{ secrets.PORT }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+        key: ${{ secrets.SSHKEY }}
+        script: |
+              cd ${{secrets.TARGET}} && git config --global --add safe.directory ${{secrets.TARGET}}
+              cd ${{secrets.TARGET}} && make build
 
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -32,7 +44,6 @@ jobs:
         passphrase: ${{ secrets.PASSPHRASE }}
         key: ${{ secrets.SSHKEY }}
         script: |
-              mkdir -p "${{secrets.TARGET}}/bin"
               touch "${{secrets.TARGET}}/bin/.env"
               printf "%s" "${{secrets.PRODUCTION_ENV}}" > "${{secrets.TARGET}}/bin/.env"
               systemctl stop api.quaythuockhanhmy.service
