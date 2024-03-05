@@ -33,7 +33,8 @@ jobs:
         key: ${{ secrets.SSHKEY }}
         script: |
               cd ${{secrets.TARGET}} && git config --global --add safe.directory ${{secrets.TARGET}}
-              cd ${{secrets.TARGET}} && make build
+              /usr/local/go/bin/go version
+              /usr/local/go/bin/go build -o ${{secrets.TARGET}}/bin/kmy ${{secrets.TARGET}}/main.go
 
     - name: Deploy
       uses: appleboy/ssh-action@master
