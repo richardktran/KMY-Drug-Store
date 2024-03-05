@@ -14,6 +14,6 @@ func NewWebRoute() WebRoute {
 
 func (r WebRoute) Setup(router *gin.Engine) {
 	router.GET("/", func(ctx *gin.Context) {
-		app.ResponseSuccess("Welcome to KMY Drug Store").Context(ctx)
+		app.ResponseSuccess("Welcome to KMY Drug Store!").Context(ctx)
 	})
 }
