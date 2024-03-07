@@ -131,6 +131,10 @@ func (o OrderController) StoreOrder() func(c *gin.Context) {
 			}
 		}
 
+		if orderRequest.Amount < 1000 {
+			orderRequest.Amount = orderRequest.Amount * 1000
+		}
+
 		order, exception := o.orderService.StoreOrder(&orderRequest)
 
 		if exception != nil {
