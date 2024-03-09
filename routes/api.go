@@ -9,17 +9,20 @@ type ApiV1Route struct {
 	orderController   controllers.OrderController
 	userController    controllers.UserController
 	productController controllers.ProductController
+	reportController  controllers.ReportController
 }
 
 func NewApiV1Route(
 	orderController controllers.OrderController,
 	userController controllers.UserController,
 	productController controllers.ProductController,
+	reportController controllers.ReportController,
 ) ApiV1Route {
 	return ApiV1Route{
 		orderController:   orderController,
 		userController:    userController,
 		productController: productController,
+		reportController:  reportController,
 	}
 }
 
@@ -45,6 +48,11 @@ func (r ApiV1Route) Setup(router *gin.Engine) {
 		product := api.Group("/products")
 		{
 			product.GET("", r.productController.GetProduct())
+		}
+
+		report := api.Group("/reports")
+		{
+			report.GET("/revenues", r.reportController.GetRevenues())
 		}
 	}
 }

@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"time"
+
 	"github.com/richardktran/KMY-Drug-Store/app/models"
 	"github.com/richardktran/KMY-Drug-Store/pkg/app"
 	"github.com/richardktran/KMY-Drug-Store/pkg/database"
@@ -59,4 +61,25 @@ func (r OrderRepository) StoreOrder(data *models.OrderCreation) (uint, *app.AppE
 		return 0, app.ThrowInternalServerError(err)
 	}
 	return data.ID, nil
+}
+
+func (r OrderRepository) GetTotalRevenueRange(from *time.Time, to *time.Time) (float64, *app.AppError) {
+	db := database.GetDB()
+	var total float64
+
+	query := db.Model(&models.Order{})
+
+	if from != nil {
+		query = query.Where("created_at >= ?", from)
+	}
+
+	if to != nil {
+		query = query.Where("created_at <= ?", to)
+	}
+
+	if err := query.Select("SUM(amount)").Row().Scan(&total); err != nil {
+		return 0, app.ThrowDefaultNotFoundError(err)
+	}
+
+	return total, nil
 }
