@@ -41,10 +41,17 @@ func (ctl *ReportController) GetRevenues() func(*gin.Context) {
 			log.Println(err)
 		}
 
+		totalRevenue, err := ctl.reportService.GetRevenueReports(timePoint, "total")
+
+		if err != nil {
+			log.Println(err)
+		}
+
 		var revenues = map[string]interface{}{
 			"year_revenue":  yearRevenues,
 			"month_revenue": monthRevenues,
 			"day_revenue":   dayRevenues,
+			"total_revenue": totalRevenue,
 		}
 
 		app.ResponseSuccess(revenues).Context(c)

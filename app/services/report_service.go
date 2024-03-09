@@ -99,6 +99,9 @@ func (svc ReportService) GetRevenueReports(timePoint time.Time, rangeType string
 		report, err = svc.GetMonthRevenueReport(timePoint)
 	case "day":
 		report, err = svc.GetDayRevenueReport(timePoint)
+	default:
+		report, err = svc.GetTotalRevenueReport(timePoint)
+
 	}
 
 	return report, err
@@ -172,6 +175,31 @@ func (svc ReportService) GetDayRevenueReport(timePoint time.Time) (models.Revenu
 	}
 
 	percentageChange := svc.CalculatePercentageChange(previous, current)
+
+	return models.RevenueReport{
+		Current:          current,
+		Previous:         previous,
+		PercentageChange: percentageChange,
+	}, nil
+}
+
+func (svc ReportService) GetTotalRevenueReport(timePoint time.Time) (models.RevenueReport, *app.AppError) {
+	now := timePoint
+
+	current, err := svc.GetRevenuesByRange(nil, nil)
+	if err != nil {
+		current = nil
+	}
+
+	previousTime := utils.GetPreviousDay(&now)
+
+	previous, err := svc.GetRevenuesByRange(previousTime, previousTime)
+
+	if err != nil {
+		previous = nil
+	}
+
+	percentageChange := 100.0
 
 	return models.RevenueReport{
 		Current:          current,
