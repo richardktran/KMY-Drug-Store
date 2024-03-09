@@ -6,4 +6,5 @@ var Module = fx.Options(
 	fx.Provide(NewOrderController),
 	fx.Provide(NewUserController),
 	fx.Provide(NewProductController),
+	fx.Provide(NewReportController),
 )
