@@ -43,6 +43,7 @@ func (r ApiV1Route) Setup(router *gin.Engine) {
 		user := api.Group("/users")
 		{
 			user.GET("", r.userController.GetUserByPhone())
+			user.GET("/list", r.userController.GetUserList())
 		}
 
 		product := api.Group("/products")

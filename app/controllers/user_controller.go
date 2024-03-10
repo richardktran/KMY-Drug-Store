@@ -20,6 +20,33 @@ func NewUserController(
 	}
 }
 
+func (ctl *UserController) GetUserList() func(*gin.Context) {
+	return func(c *gin.Context) {
+		fullName := c.DefaultQuery("full_name", "")
+		phoneNumber := c.DefaultQuery("phone_number", "")
+
+		if fullName == "" && phoneNumber == "" {
+			app.ResponseBadRequest(
+				app.ThrowBadRequestError(errors.New("full_name_or_phone_number_is_required"), "full_name_or_phone_number_is_required"),
+			).Context(c)
+
+			return
+		}
+
+		users, err := ctl.userService.GetUserList(fullName, phoneNumber)
+
+		if err != nil {
+			app.ResponseNotFound(
+				app.ThrowNotFoundError(err, "user_not_found"),
+			).Context(c)
+
+			return
+		}
+
+		app.ResponseSuccess(users).Context(c)
+	}
+}
+
 func (ctl *UserController) GetUserByPhone() func(*gin.Context) {
 	return func(c *gin.Context) {
 		phoneNumber := c.DefaultQuery("phone_number", "")

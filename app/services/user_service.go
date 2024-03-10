@@ -39,6 +39,16 @@ func (s UserService) GetUserById(id uint) (*models.User, *app.AppError) {
 	return user, nil
 }
 
+func (s UserService) GetUserList(fullName string, phoneNumber string) ([]models.User, *app.AppError) {
+	users, err := s.userRepository.GetUserList(map[string]interface{}{"full_name": fullName, "phone_number": phoneNumber})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
 func (s UserService) CreateUser(data models.UserCreation) *models.User {
 	userId, err := s.userRepository.CreateUser(&data)
 
