@@ -30,8 +30,9 @@ func (s UserService) GetUserByPhoneNumber(phoneNumber string) (*models.User, *ap
 		return nil, err
 	}
 
-	user.RemainScore = s.CalculateUserScore(user)
+	user.RemainScore = s.CalculateRemainScore(user)
 	user.MaxScore = s.CalculateMaximumScoreUsed(user)
+	user.TotalScore = s.CalculateUserTotalScore(user)
 
 	return user, nil
 }
@@ -43,8 +44,9 @@ func (s UserService) GetUserById(id uint) (*models.User, *app.AppError) {
 		return nil, err
 	}
 
-	user.RemainScore = s.CalculateUserScore(user)
+	user.RemainScore = s.CalculateRemainScore(user)
 	user.MaxScore = s.CalculateMaximumScoreUsed(user)
+	user.TotalScore = s.CalculateUserTotalScore(user)
 
 	return user, nil
 }
@@ -57,8 +59,9 @@ func (s UserService) GetUserList(fullName string, phoneNumber string) ([]models.
 	}
 
 	for i := range users {
-		users[i].RemainScore = s.CalculateUserScore(&users[i])
+		users[i].RemainScore = s.CalculateRemainScore(&users[i])
 		users[i].MaxScore = s.CalculateMaximumScoreUsed(&users[i])
+		users[i].TotalScore = s.CalculateUserTotalScore(&users[i])
 	}
 
 	return users, nil
@@ -80,16 +83,20 @@ func (s UserService) CreateUser(data models.UserCreation) *models.User {
 	return user
 }
 
-func (s UserService) CalculateUserScore(user *models.User) int {
+func (s UserService) CalculateUserTotalScore(user *models.User) int {
 	totalAmount, error := s.orderRepository.GetTotalAmountOfUser(user.ID)
 
 	if error != nil {
 		return 0
 	}
 
-	return int(totalAmount/1000) - user.ScoreUsed*conf.SCORE_RATE
+	return int(totalAmount / 1000)
+}
+
+func (s UserService) CalculateRemainScore(user *models.User) int {
+	return s.CalculateUserTotalScore(user) - user.ScoreUsed*conf.SCORE_RATE
 }
 
 func (s UserService) CalculateMaximumScoreUsed(user *models.User) int {
-	return s.CalculateUserScore(user) / conf.SCORE_RATE
+	return s.CalculateRemainScore(user) / conf.SCORE_RATE
 }

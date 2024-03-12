@@ -9,6 +9,7 @@ type User struct {
 	ScoreUsed   int    `json:"score_used" gorm:"column:score_used;"`
 	RemainScore int    `json:"remain_score" gorm:"-"`
 	MaxScore    int    `json:"max_score" gorm:"-"`
+	TotalScore  int    `json:"total_score" gorm:"-"`
 }
 
 type UserCreation struct {
