@@ -6,6 +6,9 @@ type User struct {
 	model.BaseModel
 	FullName    string `json:"full_name" gorm:"column:full_name;"`
 	PhoneNumber string `json:"phone_number" gorm:"column:phone_number;"`
+	ScoreUsed   int    `json:"score_used" gorm:"column:score_used;"`
+	RemainScore int    `json:"remain_score" gorm:"-"`
+	MaxScore    int    `json:"max_score" gorm:"-"`
 }
 
 type UserCreation struct {

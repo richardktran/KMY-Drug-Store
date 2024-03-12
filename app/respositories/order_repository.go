@@ -83,3 +83,14 @@ func (r OrderRepository) GetTotalRevenueRange(from *time.Time, to *time.Time) (f
 
 	return total, nil
 }
+
+func (r OrderRepository) GetTotalAmountOfUser(userId uint) (float64, *app.AppError) {
+	db := database.GetDB()
+	var total float64
+
+	if err := db.Model(&models.Order{}).Where("user_id = ?", userId).Select("SUM(amount)").Row().Scan(&total); err != nil {
+		return 0, app.ThrowDefaultNotFoundError(err)
+	}
+
+	return total, nil
+}
