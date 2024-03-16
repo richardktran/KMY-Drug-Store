@@ -53,3 +53,20 @@ func (r UserRepository) CreateUser(data *models.UserCreation) (uint, *app.AppErr
 
 	return data.ID, nil
 }
+
+func (r UserRepository) UpdateUser(condition map[string]any, updateData *models.UserUpdate) (uint, *app.AppError) {
+	db := database.GetDB()
+
+	// Create and get user id
+	if err := db.Where(condition).Updates(&updateData).Error; err != nil {
+		return 0, app.ThrowInternalServerError(err)
+	}
+
+	userUpdated, err := r.GetUser(condition)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return userUpdated.ID, nil
+}

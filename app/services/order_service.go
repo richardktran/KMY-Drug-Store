@@ -56,6 +56,30 @@ func (s OrderService) StoreOrder(data *models.OrderCreation) (*models.Order, *ap
 		user = s.userService.CreateUser(userDataCreation)
 	}
 
+	if data.Score > 0 {
+		if user.MaxScore < data.Score {
+			return nil, app.ThrowBadRequestError(nil, "not_enough_score")
+		}
+
+		userDataUpdate := models.UserUpdate{
+			ScoreUsed: user.ScoreUsed + data.Score,
+		}
+
+		userUpdated := s.userService.UpdateUserById(user.ID, userDataUpdate)
+
+		if userUpdated == nil {
+			return nil, app.ThrowBadRequestError(
+				nil,
+				"update_score_failed",
+			)
+		}
+
+	}
+
+	if user == nil {
+		return nil, app.ThrowBadRequestError(nil, "user_not_found")
+	}
+
 	// Check if product exists
 	product, err := s.productService.GetProductByName(data.ProductName)
 

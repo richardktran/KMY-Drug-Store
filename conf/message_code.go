@@ -11,4 +11,7 @@ var MessageMap = map[string]string{
 	"product_not_found":        "Không tìm thấy thuốc",
 	"product_name_is_required": "Tên thuốc không được để trống",
 	"orders_not_found":         "Không tìm thấy thông tin tích điểm",
+	"not_enough_score":         "Số điểm không đủ để tích điểm",
+	"update_score_failed":      "Cập nhật điểm không thành công, xin thử lại!",
+	"order_not_found":          "Không tìm thấy thông tin khách hàng",
 }

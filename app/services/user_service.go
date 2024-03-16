@@ -83,6 +83,23 @@ func (s UserService) CreateUser(data models.UserCreation) *models.User {
 	return user
 }
 
+func (s UserService) UpdateUserById(id uint, data models.UserUpdate) *models.User {
+	userId, err := s.userRepository.UpdateUser(map[string]interface{}{"id": id}, &data)
+
+	if err != nil {
+		return nil
+	}
+
+	user, err := s.GetUserById(userId)
+
+	if err != nil {
+
+		return nil
+	}
+
+	return user
+}
+
 func (s UserService) CalculateUserTotalScore(user *models.User) int {
 	totalAmount, error := s.orderRepository.GetTotalAmountOfUser(user.ID)
 

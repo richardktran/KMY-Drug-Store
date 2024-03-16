@@ -27,6 +27,7 @@ type OrderCreation struct {
 	ProductId   uint   `json:"-" gorm:"column:product_id;"`
 	Quantity    int    `json:"quantity,omitempty" gorm:"column:quantity;"`
 	Amount      int    `json:"amount" gorm:"column:amount;"`
+	Score       int    `json:"score,omitempty" gorm:"-"`
 	Note        string `json:"note,omitempty" gorm:"column:note;default:null"`
 }
 

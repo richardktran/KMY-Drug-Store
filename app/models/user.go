@@ -18,10 +18,21 @@ type UserCreation struct {
 	PhoneNumber string `json:"phone_number" gorm:"column:phone_number;"`
 }
 
+type UserUpdate struct {
+	model.BaseModel
+	FullName    string `json:"full_name" gorm:"column:full_name;"`
+	PhoneNumber string `json:"phone_number" gorm:"column:phone_number;"`
+	ScoreUsed   int    `json:"score_used" gorm:"column:score_used;"`
+}
+
 func (User) TableName() string {
 	return "users"
 }
 
 func (UserCreation) TableName() string {
+	return User{}.TableName()
+}
+
+func (UserUpdate) TableName() string {
 	return User{}.TableName()
 }
