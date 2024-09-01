@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"strings"
+
 	"github.com/richardktran/KMY-Drug-Store/app/models"
 	"github.com/richardktran/KMY-Drug-Store/pkg/app"
 	"github.com/richardktran/KMY-Drug-Store/pkg/database"
@@ -33,11 +35,29 @@ func (r UserRepository) GetUserList(condition map[string]any) ([]models.User, *a
 	}
 
 	if condition["phone_number"] != nil && condition["phone_number"].(string) != "" {
-		db = db.Where("phone_number LIKE ?", "%"+condition["phone_number"].(string)+"%")
+		db = db.Where("phone_number LIKE ?", "%"+condition["phone_number"].(string))
 	}
 
 	if err := db.Find(&userList).Error; err != nil {
 		return nil, app.ThrowDefaultNotFoundError(err)
+	}
+
+	// Filter full name with userList like a search engine
+	if condition["full_name"] != nil && condition["full_name"].(string) != "" {
+		var userListFiltered []models.User
+
+		for _, user := range userList {
+			fullName := strings.ToLower(condition["full_name"].(string))
+			if strings.Contains(strings.ToLower(user.FullName), fullName) {
+				userListFiltered = append(userListFiltered, user)
+			}
+		}
+
+		userList = userListFiltered
+
+		if len(userList) == 0 {
+			return nil, app.ThrowDefaultNotFoundError(nil)
+		}
 	}
 
 	return userList, nil
