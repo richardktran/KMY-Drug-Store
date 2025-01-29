@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/gin-gonic/gin"
+	"github.com/richardktran/KMY-Drug-Store/app/models"
 	"github.com/richardktran/KMY-Drug-Store/app/services/contracts"
 	"github.com/richardktran/KMY-Drug-Store/pkg/app"
 )
@@ -71,5 +72,37 @@ func (ctl *UserController) GetUserByPhone() func(*gin.Context) {
 
 		app.ResponseSuccess(user).Context(c)
 
+	}
+}
+
+func (ctl *UserController) AccumulateScore() func(*gin.Context) {
+	return func(c *gin.Context) {
+		var scoreUpdate models.ScoreUpdate
+
+		if err := c.ShouldBind(&scoreUpdate); err != nil {
+			app.ResponseBadRequest(
+				app.ThrowBadRequestError(err, "invalid_request"),
+			).Context(c)
+			return
+		}
+
+		if scoreUpdate.PhoneNumber == "" {
+			app.ResponseBadRequest(
+				app.ThrowBadRequestError(errors.New("phone_number_is_required"), "phone_number_is_required"),
+			).Context(c)
+			return
+		}
+
+		user, err := ctl.userService.AccumulateScore(scoreUpdate.PhoneNumber)
+
+		if err != nil {
+			app.ResponseNotFound(
+				app.ThrowNotFoundError(err, "user_not_found"),
+			).Context(c)
+
+			return
+		}
+
+		app.ResponseSuccess(user).Context(c)
 	}
 }

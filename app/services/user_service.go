@@ -117,3 +117,17 @@ func (s UserService) CalculateRemainScore(user *models.User) int {
 func (s UserService) CalculateMaximumScoreUsed(user *models.User) int {
 	return s.CalculateRemainScore(user) / conf.SCORE_RATE
 }
+
+func (s UserService) AccumulateScore(phoneNumber string) (*models.User, error) {
+	user, err := s.userRepository.GetUser(map[string]interface{}{"phone_number": phoneNumber})
+
+	if err != nil {
+		return nil, err
+	}
+
+	maxScore := s.CalculateMaximumScoreUsed(user)
+
+	s.userRepository.UpdateScore(user.ID, maxScore)
+
+	return user, nil
+}

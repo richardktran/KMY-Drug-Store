@@ -25,6 +25,11 @@ type UserUpdate struct {
 	ScoreUsed   int    `json:"score_used" gorm:"column:score_used;"`
 }
 
+type ScoreUpdate struct {
+	model.BaseModel
+	PhoneNumber string `json:"phone_number" gorm:"column:phone_number;"`
+}
+
 func (User) TableName() string {
 	return "users"
 }

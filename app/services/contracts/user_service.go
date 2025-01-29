@@ -10,4 +10,5 @@ type IUserService interface {
 	GetUserList(fullName string, phoneNumber string) ([]models.User, *app.AppError)
 	CreateUser(data models.UserCreation) *models.User
 	UpdateUserById(id uint, data models.UserUpdate) *models.User
+	AccumulateScore(phoneNumber string) (*models.User, error)
 }

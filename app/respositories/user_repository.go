@@ -90,3 +90,20 @@ func (r UserRepository) UpdateUser(condition map[string]any, updateData *models.
 
 	return userUpdated.ID, nil
 }
+
+func (r UserRepository) UpdateScore(userId uint, score int) *app.AppError {
+	db := database.GetDB()
+
+	var user models.User
+	if err := db.Model(&models.User{}).Where("id = ?", userId).First(&user).Error; err != nil {
+		return app.ThrowInternalServerError(err)
+	}
+
+	newScore := user.ScoreUsed + score
+
+	if err := db.Model(&models.User{}).Where("id = ?", userId).Update("score_used", newScore).Error; err != nil {
+		return app.ThrowInternalServerError(err)
+	}
+
+	return nil
+}

@@ -44,6 +44,7 @@ func (r ApiV1Route) Setup(router *gin.Engine) {
 		{
 			user.GET("", r.userController.GetUserByPhone())
 			user.GET("/list", r.userController.GetUserList())
+			user.POST("/accumulate-score", r.userController.AccumulateScore())
 		}
 
 		product := api.Group("/products")
